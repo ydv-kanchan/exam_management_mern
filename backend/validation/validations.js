@@ -13,7 +13,7 @@ const formateValidationMessage = (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.mapped() });
   }
-}
+};
 
 // register admin or student
 const registerValidation = [
@@ -46,4 +46,27 @@ const updateStudentValidation = [
   check("email").optional().isEmail().withMessage("Invalid email format"),
 ];
 
-module.exports = { formateValidationMessage, registerValidation, loginValidation, updateStudentValidation };
+// create exam validation
+const createExamValidation = [
+  check("title").notEmpty().withMessage("Title is required"),
+  check("questions")
+    .isArray({ min: 1 })
+    .withMessage("At least one question is required"),
+  check("questions.*.question")
+    .notEmpty()
+    .withMessage("Question text is required"),
+  check("questions.*.options")
+    .isArray({ min: 2 })
+    .withMessage("Each question must have at least two options"),
+  check("questions.*.correctAnswer")
+    .notEmpty()
+    .withMessage("Correct answer is required"),
+];
+
+module.exports = {
+  formateValidationMessage,
+  registerValidation,
+  loginValidation,
+  updateStudentValidation,
+  createExamValidation,
+};

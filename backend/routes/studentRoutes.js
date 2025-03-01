@@ -1,18 +1,17 @@
 const express = require('express');
 const Exam = require('../models/Exam');
 const Result = require('../models/Result');
-const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // Get All Exams (Student)
-router.get('/exams', authMiddleware, async (req, res) => {
+router.get('/exams', async (req, res) => {
     const exams = await Exam.find();
     res.json(exams);
 });
 
 // Take Exam
-router.post('/exams/:examId/submit', authMiddleware, async (req, res) => {
+router.post('/exams/:examId/submit', async (req, res) => {
     if (req.student.role !== 'student') return res.status(403).json({ error: 'Forbidden' });
 
     const exam = await Exam.findById(req.params.examId);
@@ -40,7 +39,7 @@ router.post('/exams/:examId/submit', authMiddleware, async (req, res) => {
 });
 
 // Get Student Exam Results
-router.get('/results', authMiddleware, async (req, res) => {
+router.get('/results', async (req, res) => {
     const results = await Result.find({ studentId: req.student.id }).populate('examId');
     res.json(results);
 });

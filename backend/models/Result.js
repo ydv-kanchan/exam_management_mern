@@ -12,6 +12,12 @@ const ResultSchema = new mongoose.Schema(
       ref: "Exam",
       required: true,
     },
+    answers: [
+      {
+        questionId: { type: mongoose.Schema.Types.ObjectId, required: true },
+        selectedOption: { type: String, required: true }
+      }
+    ],
     score: { type: Number, required: true },
     passed: { type: Boolean, required: true },
   },

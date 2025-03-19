@@ -1,72 +1,70 @@
-const { check } = require("express-validator");
-const { validationResult } = require("express-validator");
+const Joi = require("joi");
 
-// formate validation message common function
-const formateValidationMessage = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const formattedErrors = Object.fromEntries(
-      Object.entries(errors.mapped()).map(([key, value]) => [key, value.msg])
-    );
-    return res.status(400).json({ errors: formattedErrors });
-  }
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.mapped() });
-  }
+// **Validation Middleware**
+const validateRequest = (schema) => {
+  return (req, res, next) => {
+    const { error } = schema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+      const formattedErrors = error.details.reduce((acc, curr) => {
+        acc[curr.path.join(".")] = curr.message;
+        return acc;
+      }, {});
+      return res.status(400).json({ errors: formattedErrors });
+    }
+
+    next();
+  };
 };
 
-// register admin or student
-const registerValidation = [
-  check("name").notEmpty().withMessage("Name is required"),
-  check("email").isEmail().withMessage("Invalid email format"),
-  check("password")
-    .isLength({ min: 8 })
-    .withMessage("Password must be at least 8 characters long")
-    .matches(/[a-z]/)
-    .withMessage("Password must contain at least one lowercase letter")
-    .matches(/[A-Z]/)
-    .withMessage("Password must contain at least one uppercase letter")
-    .matches(/\d/)
-    .withMessage("Password must contain at least one number")
-    .matches(/[@$!%*?&]/)
-    .withMessage(
-      "Password must contain at least one special character (@$!%*?&)"
-    ),
-];
+// **Optimized Password Validation**
+const passwordValidation = Joi.string()
+  .required()
+  .messages({ "any.required": "Password is required" })
+  .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/, "password")
+  .messages({
+    "string.pattern.name":
+      "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character (@$!%*?&).",
+  });
 
-// login admin or student
-const loginValidation = [
-  check("email").isEmail().withMessage("Invalid email format"),
-  check("password").notEmpty().withMessage("Password is required"),
-];
+// **Register Schema**
+const registerSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "any.required": "Name is required",
+    "string.empty": "Name is required",
+  }),
+  email: Joi.string().email().required().messages({
+    "string.email": "Invalid email format",
+    "any.required": "Email is required",
+  }),
+  password: passwordValidation,
+  role: Joi.string().optional().allow("admin", "student")
+});
 
-// update student validation
-const updateStudentValidation = [
-  check("name").optional().notEmpty().withMessage("Name is required"),
-  check("email").optional().isEmail().withMessage("Invalid email format"),
-];
+// **Login Schema**
+const loginSchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    "string.email": "Invalid email format",
+    "any.required": "Email is required",
+  }),
+  password: passwordValidation
+});
 
-// create exam validation
-const createExamValidation = [
-  check("title").notEmpty().withMessage("Title is required"),
-  check("questions")
-    .isArray({ min: 1 })
-    .withMessage("At least one question is required"),
-  check("questions.*.question")
-    .notEmpty()
-    .withMessage("Question text is required"),
-  check("questions.*.options")
-    .isArray({ min: 2 })
-    .withMessage("Each question must have at least two options"),
-  check("questions.*.correctAnswer")
-    .notEmpty()
-    .withMessage("Correct answer is required"),
-];
+// update student
+const updateStudentSchema = Joi.object({
+  name: Joi.string().optional().messages({
+    "string.empty": "Name is optional",
+  }),
+  email: Joi.string().email().optional().messages({
+    "string.email": "Invalid email format",
+  }),
+});
 
-module.exports = {
-  formateValidationMessage,
-  registerValidation,
-  loginValidation,
-  updateStudentValidation,
-  createExamValidation,
-};
+// **Validation Middleware Functions**
+const registerValidation = validateRequest(registerSchema);
+const loginValidation = validateRequest(loginSchema);
+const updateStudentValidation = validateRequest(updateStudentSchema);
+
+
+// **Export Validations**
+module.exports = { registerValidation, loginValidation, updateStudentValidation };

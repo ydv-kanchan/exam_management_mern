@@ -4,7 +4,7 @@ A full-stack web application for managing exams and students using the MERN stac
 
 ## 📌 Features
 - **Admin:**
-  - Manage students (Add/Edit/Delete).
+  - Manage students (Edit/Delete).
   - Create & manage exams.
   - View exam results.
 - **Students:**
@@ -12,9 +12,8 @@ A full-stack web application for managing exams and students using the MERN stac
   - View pass/fail status (50% passing criteria).
 
 ## 🛠 Technology Stack
-- **Frontend:** React.js, Redux, Tailwind CSS/Bootstrap
+- **Frontend:** React.js, Redux, Bootstrap
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB (Mongoose)
 - **Authentication:** JWT (JSON Web Token)
-- **Deployment:** Vercel (Frontend), Render/Heroku (Backend)
 

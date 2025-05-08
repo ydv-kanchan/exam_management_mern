@@ -1,56 +1,78 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import useAuthStore from "../store/authStore";
-import { Container, Card, ListGroup } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 
 function Dashboard() {
-    const { user } = useAuthStore();
-    const navigate = useNavigate();
-    const [role, setRole] = useState(null);
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [role, setRole] = useState(null);
 
-    useEffect(() => {
-        if (user) {
-            setRole(user.student.role);
-        } else {
-            navigate("/login");
+  useEffect(() => {
+    if (user) {
+      const userRole = user.student.role;
+      setRole(userRole);
+
+      // Redirect to default sub-route based on role
+      if (location.pathname === "/dashboard") {
+        if (userRole === "student") {
+          navigate("exam-list");
+        } else if (userRole === "admin") {
+          navigate("students");
         }
-    }, [user, navigate]);
+      }
+    } else {
+      navigate("/login");
+    }
+  }, [user, navigate, location]);
 
-    return (
-        <Container className="d-flex justify-content-center align-items-center vh-100">
-            <Card className="shadow-lg p-4" style={{ width: "450px", borderRadius: "10px" }}>
-                <Card.Body>
-                    <h2 className="text-center text-primary mb-4">Welcome</h2>
-                    {role === "admin" && (
-                        <>
-                            <h4 className="text-center text-success mb-3">Admin {user?.student?.name}</h4>
-                            <ListGroup variant="flush">
-                                <ListGroup.Item action as={Link} to="/students">
-                                    📌 Manage Students (List, Update, Delete)
-                                </ListGroup.Item>
-                                <ListGroup.Item action as={Link} to="/exams">
-                                    📝 Create & List Exams
-                                </ListGroup.Item>
-                            </ListGroup>
-                        </>
-                    )}
-                    {role === "student" && (
-                        <>
-                            <h4 className="text-center text-info mb-3">Student {user?.student?.name}</h4>
-                            <ListGroup variant="flush">
-                                <ListGroup.Item action as={Link} to="/exams">
-                                    📝 Take Exam
-                                </ListGroup.Item>
-                                <ListGroup.Item action as={Link} to="/exam-list">
-                                    📜 All Taken Exams
-                                </ListGroup.Item>
-                            </ListGroup>
-                        </>
-                    )}
-                </Card.Body>
-            </Card>
-        </Container>
-    );
+  return (
+    <div className="d-flex vh-100">
+      {/* Sidebar - 20% */}
+      <div
+        style={{
+          width: "20%",
+          backgroundColor: "#f8f9fa",
+          padding: "20px",
+          borderRight: "1px solid #dee2e6",
+        }}
+      >
+        <h5 className="text-center mb-4">
+          {role === "admin"
+            ? `Admin ${user?.student?.name}`
+            : `Student ${user?.student?.name}`}
+        </h5>
+        <ListGroup>
+          {role === "admin" && (
+            <>
+              <ListGroup.Item action as={Link} to="students">
+                📌 Manage Students
+              </ListGroup.Item>
+              <ListGroup.Item action as={Link} to="exams">
+                📝 Create & List Exams
+              </ListGroup.Item>
+            </>
+          )}
+          {role === "student" && (
+            <>
+              <ListGroup.Item action as={Link} to="exams">
+                📝 Take Exam
+              </ListGroup.Item>
+              <ListGroup.Item action as={Link} to="exam-list">
+                📜 All Taken Exams
+              </ListGroup.Item>
+            </>
+          )}
+        </ListGroup>
+      </div>
+
+      {/* Main Content - 80% */}
+      <div style={{ width: "80%", padding: "30px", overflowY: "auto" }}>
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
 export default Dashboard;

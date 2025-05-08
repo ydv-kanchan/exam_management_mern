@@ -26,7 +26,7 @@ const ExamResults = () => {
       });
       setResults(response.data);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to fetch exam results");
+      console.log(error);
     }
   };
 

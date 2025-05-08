@@ -11,7 +11,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { IoClose } from "react-icons/io5";
 
 const ExamList = () => {
   const [exams, setExams] = useState([]);
@@ -59,9 +58,7 @@ const ExamList = () => {
                   ➕ Create Exam
                 </Button>
               )}
-              {/* <Button onClick={() => navigate(-1)}>
-                <IoClose size={20} />
-              </Button> */}
+              
             </Col>
           </Row>
 

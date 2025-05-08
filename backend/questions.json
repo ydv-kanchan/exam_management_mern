@@ -2,6 +2,7 @@
     {
       "_id": { "$oid": "681c0ab99515c0d9ddbca301" },
       "title": "MySQL",
+      "duration":30,
       "questions": [
         { "_id": { "$oid": "681c0ab99515c0d9ddbca311" }, "question": "What is the default port of MySQL?", "options": ["3306", "1433"], "correctAnswer": "3306" },
         { "_id": { "$oid": "681c0ab99515c0d9ddbca312" }, "question": "Which command is used to see all databases?", "options": ["SHOW DATABASES;", "SELECT * FROM databases;"], "correctAnswer": "SHOW DATABASES;" },
@@ -21,6 +22,7 @@
     {
       "_id": { "$oid": "681c0ab99515c0d9ddbca321" },
       "title": "Java",
+      "duration":25,
       "questions": [
         { "_id": { "$oid": "681c0ab99515c0d9ddbca322" }, "question": "What is the size of an int in Java?", "options": ["16 bits", "32 bits"], "correctAnswer": "32 bits" },
         { "_id": { "$oid": "681c0ab99515c0d9ddbca323" }, "question": "What is the default value of a boolean in Java?", "options": ["true", "false"], "correctAnswer": "false" },
@@ -40,6 +42,7 @@
     {
       "_id": { "$oid": "681c0ab99515c0d9ddbca332" },
       "title": "JavaScript",
+      "duration":30,
       "questions": [
         { "_id": { "$oid": "681c0ab99515c0d9ddbca333" }, "question": "What does DOM stand for?", "options": ["Document Object Model", "Document Output Model"], "correctAnswer": "Document Object Model" },
         { "_id": { "$oid": "681c0ab99515c0d9ddbca334" }, "question": "What is the use of 'this' in JavaScript?", "options": ["References current object", "Refers to a global object"], "correctAnswer": "References current object" },
@@ -59,6 +62,7 @@
     {
       "_id": { "$oid": "681c0ab99515c0d9ddbca343" },
       "title": "Operating System",
+      "duration":30,
       "questions": [
         { "_id": { "$oid": "681c0ab99515c0d9ddbca344" }, "question": "What is the function of an operating system?", "options": ["Manage hardware", "Execute programs"], "correctAnswer": "Both" },
         { "_id": { "$oid": "681c0ab99515c0d9ddbca345" }, "question": "Which OS is used in most smartphones?", "options": ["Android", "Windows Mobile"], "correctAnswer": "Android" },
@@ -74,6 +78,7 @@
     {
       "_id": { "$oid": "681c0ab99515c0d9ddbca350" },
       "title": "Maths Aptitude",
+      "duration":10,
       "questions": [
         { "_id": { "$oid": "681c0ab99515c0d9ddbca351" }, "question": "What is the square root of 144?", "options": ["12", "14"], "correctAnswer": "12" },
         { "_id": { "$oid": "681c0ab99515c0d9ddbca352" }, "question": "What is 15% of 200?", "options": ["30", "35"], "correctAnswer": "30" },
@@ -93,6 +98,7 @@
     {
       "_id": { "$oid": "681c0ab99515c0d9ddbca361" },
       "title": "Cloud Computing",
+      "duration":30,
       "questions": [
         { "_id": { "$oid": "681c0ab99515c0d9ddbca362" }, "question": "What is cloud computing?", "options": ["Storing data on local servers", "Storing data on remote servers"], "correctAnswer": "Storing data on remote servers" },
         { "_id": { "$oid": "681c0ab99515c0d9ddbca363" }, "question": "Which is an example of a cloud service?", "options": ["Google Drive", "Dropbox"], "correctAnswer": "Both" },

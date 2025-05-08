@@ -4,7 +4,6 @@ const {
   authenticateUser,
   authorizeAdmin,
 } = require("../middleware/authMiddleware");
-const Result = require("../models/Result");
 
 const router = express.Router();
 
@@ -13,17 +12,18 @@ router.post(
   "/create",
   authenticateUser,
   authorizeAdmin,
-  // createExamValidation,
   async (req, res) => {
     if (req.student.role !== "admin")
       return res.status(403).json({ error: "Forbidden" });
 
     const exam = new Exam(req.body);
     await exam.save();
+
     res.json({
       message: "Exam created successfully",
       exam: {
         title: exam.title,
+        duration: exam.duration,
         questions: exam.questions,
         _id: exam._id,
         createdAt: exam.createdAt,
@@ -34,7 +34,7 @@ router.post(
 
 // Get All Exams
 router.get("/", authenticateUser, async (req, res) => {
-  const exams = await Exam.find().select("_id createdAt questions title");
+  const exams = await Exam.find().select("_id createdAt questions title duration");
   res.json(exams);
 });
 
@@ -43,6 +43,5 @@ router.get("/:id", authenticateUser, async (req, res) => {
   const exam = await Exam.findById(req.params.id);
   res.json(exam);
 });
-
 
 module.exports = router;

@@ -32,9 +32,9 @@ const StudentExamList = () => {
                     <Col sm={8}>
                         <h2 className="text-primary mb-4">📜 My Exam Results</h2>
                     </Col>
-                    <Col sm={4} className="text-end">
+                    {/* <Col sm={4} className="text-end">
                         <Button variant="secondary" onClick={() => navigate(-1)}>⬅️ Back</Button>
-                    </Col>
+                    </Col> */}
                 </Row>
 
                 <Table striped bordered hover responsive className="text-center">

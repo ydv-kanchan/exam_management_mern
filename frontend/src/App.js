@@ -25,27 +25,36 @@ import StudentExamList from "./pages/StudentExamList";
 function App() {
   return (
     <Router>
-      <NavbarComponent />
-      <ToastContainer />
+      {/* Show navbar only when not taking exam */}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard/exams/take/:id" element={<TakeExam />} />
+        <Route
+          path="*"
+          element={
+            <>
+              <NavbarComponent />
+              <ToastContainer />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-        {/* Nested Dashboard Routes */}
-        <Route path="/dashboard" element={<Dashboard />}>
-          <Route path="students" element={<StudentList />} />
-          <Route path="exams" element={<ExamList />} />
-          <Route path="exam-list" element={<StudentExamList />} />
-          <Route path="exams/view/:id" element={<ExamDetails />} />
-          <Route path="exams/create" element={<CreateExam />} />
-          <Route path="exams/take/:id" element={<TakeExam />} />
-          <Route path="result/:id" element={<Result />} />
-          <Route path="exams/results/:examId" element={<ExamResults />} />
-        </Route>
+                {/* Nested Dashboard Routes */}
+                <Route path="/dashboard" element={<Dashboard />}>
+                  <Route path="students" element={<StudentList />} />
+                  <Route path="exams" element={<ExamList />} />
+                  <Route path="exam-list" element={<StudentExamList />} />
+                  <Route path="exams/view/:id" element={<ExamDetails />} />
+                  <Route path="exams/create" element={<CreateExam />} />
+                  <Route path="result/:id" element={<Result />} />
+                  <Route path="exams/results/:examId" element={<ExamResults />} />
+                </Route>
 
-        {/* Catch-all fallback */}
-        <Route path="*" element={<Navigate to="/" />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </>
+          }
+        />
       </Routes>
     </Router>
   );

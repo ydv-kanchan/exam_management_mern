@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 
 const CreateExam = () => {
     const navigate = useNavigate();
-
     const user = localStorage.getItem("user");
     if (!user) throw new Error("No token found");
 
@@ -16,6 +15,10 @@ const CreateExam = () => {
 
     const validationSchema = Yup.object().shape({
         title: Yup.string().required("Exam title is required"),
+        duration: Yup.number()
+            .required("Duration is required")
+            .positive("Must be a positive number")
+            .integer("Must be an integer"),
         questions: Yup.array()
             .of(
                 Yup.object().shape({
@@ -38,12 +41,10 @@ const CreateExam = () => {
 
     const initialValues = {
         title: "",
-        questions: [
-            { question: "", options: ["", ""], correctAnswer: "" }
-        ],
+        duration: "", 
+        questions: [{ question: "", options: ["", ""], correctAnswer: "" }],
     };
 
-    // Form Submission
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             const response = await axios.post(
@@ -52,7 +53,7 @@ const CreateExam = () => {
                 { headers: { Authorization: `Bearer ${parsedUser.token}` } }
             );
             toast.success(response.data.message);
-            navigate("/exams");
+            navigate("/dashboard/exams");
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to create exam");
         }
@@ -70,6 +71,12 @@ const CreateExam = () => {
                                 <Form.Label>Exam Title</Form.Label>
                                 <Field name="title" as={Form.Control} placeholder="Enter exam title" />
                                 <ErrorMessage name="title" component="div" className="text-danger" />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3">
+                                <Form.Label>Exam Duration (in minutes)</Form.Label>
+                                <Field name="duration" as={Form.Control} placeholder="Enter duration" />
+                                <ErrorMessage name="duration" component="div" className="text-danger" />
                             </Form.Group>
 
                             <FieldArray name="questions">
@@ -136,7 +143,6 @@ const CreateExam = () => {
                                                         <Button variant="danger" className="mt-3" onClick={() => remove(qIndex)} disabled={values.questions.length === 1}>❌ Remove Question</Button>
                                                     </Col>
                                                 </Row>
-
                                             </Card>
                                         ))}
                                         <Button variant="primary" onClick={() => push({ question: "", options: ["", ""], correctAnswer: "" })}>
@@ -147,7 +153,7 @@ const CreateExam = () => {
                             </FieldArray>
                             <div className="text-center mt-4">
                                 <Button type="submit" variant="success">{isSubmitting ? "Submitting..." : "✅ Create Exam"}</Button>
-                                <Button variant="secondary" className="ms-3" onClick={() => navigate("/exams")}>⬅️ Cancel</Button>
+                                <Button variant="secondary" className="ms-3" onClick={() => navigate("/dashboard/exams")}>⬅️ Cancel</Button>
                             </div>
                         </FormikForm>
                     )}

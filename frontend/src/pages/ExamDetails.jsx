@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -18,6 +19,7 @@ function ExamDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     fetchExamDetail();
   }, []);
@@ -38,6 +40,7 @@ function ExamDetails() {
       );
 
       setExam(response.data);
+      console.log(response.data);
     } catch (err) {
       setError(err.response?.data?.error || "Failed to fetch exam details");
     } finally {
@@ -60,12 +63,26 @@ function ExamDetails() {
       </Container>
     );
   }
+
   return (
     <Container className="mt-5">
       <Card className="shadow-lg p-4">
         <Row className="">
           <Col sm={10}>
             <h2 className="text-primary">📝 {exam.title}</h2>
+            {/* Styled Duration */}
+            <h4 className="mt-2" style={{ color: "#6c757d" }}>
+              <span style={{ fontSize: "18px", fontWeight: "bold" }}>⏰ Duration:</span>{" "}
+              <span
+                style={{
+                  color: "#28a745", // Green for a positive/active feel
+                  fontSize: "20px",
+                  fontWeight: "600",
+                }}
+              >
+                {exam.duration} minutes
+              </span>
+            </h4>
           </Col>
           <Col sm={2}>
             <Button variant="secondary" onClick={() => navigate(-1)}>

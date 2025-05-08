@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuthStore from "../store/authStore";
 import axios from "axios";
+
 const Login = () => {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
@@ -22,15 +23,13 @@ const Login = () => {
       login({ student, token });
 
       toast.success(`${student.role} logged in successfully!`);
-
       navigate("/dashboard");
     } catch (error) {
       const serverErrors = error.response?.data?.errors;
-
       if (serverErrors) {
         setErrors(serverErrors);
       } else {
-        toast.error(error.response?.data?.message || "Something went wrong!");
+        toast.error(error.response?.data?.message || error.message || "Server not responding");
       }
     } finally {
       setSubmitting(false);

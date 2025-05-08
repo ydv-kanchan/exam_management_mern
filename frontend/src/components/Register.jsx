@@ -12,17 +12,17 @@ const Register = () => {
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email format").required("Email is required"),
     password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    role: Yup.string().oneOf(["student", "admin"], "Invalid role").required("Role is required"),
   });
 
-  const handleLogin = async (values, { setSubmitting, setErrors }) => {
+  const handleRegister = async (values, { setSubmitting, setErrors }) => {
     try {
       const response = await axios.post("http://localhost:5000/api/auth/register", values);
-      const { message, data } = response.data;
+      const { message } = response.data;
       toast.success(message);
       navigate("/login");
     } catch (error) {
       const serverErrors = error.response?.data?.errors;
-
       if (serverErrors) {
         setErrors(serverErrors);
       } else {
@@ -38,44 +38,41 @@ const Register = () => {
       <Card className="p-4 shadow-lg" style={{ width: "400px" }}>
         <h2 className="text-center mb-4">Register</h2>
         <Formik
-          initialValues={{ name: "", email: "", password: "" }}
+          initialValues={{ name: "", email: "", password: "", role: "student" }}
           validationSchema={validationSchema}
-          onSubmit={handleLogin}
+          onSubmit={handleRegister}
         >
           {({ isSubmitting }) => (
             <FormikForm>
               <Form.Group className="mb-3">
                 <Form.Label>Name</Form.Label>
-                <Field
-                  type="text"
-                  name="name"
-                  className="form-control"
-                  as={Form.Control}
-                />
+                <Field type="text" name="name" className="form-control" as={Form.Control} />
                 <ErrorMessage name="name" component="div" className="text-danger" />
               </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label>Email</Form.Label>
-                <Field
-                  type="email"
-                  name="email"
-                  className="form-control"
-                  as={Form.Control}
-                />
+                <Field type="email" name="email" className="form-control" as={Form.Control} />
                 <ErrorMessage name="email" component="div" className="text-danger" />
               </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label>Password</Form.Label>
-                <Field
-                  type="password"
-                  name="password"
-                  className="form-control"
-                  as={Form.Control}
-                />
+                <Field type="password" name="password" className="form-control" as={Form.Control} />
                 <ErrorMessage name="password" component="div" className="text-danger" />
               </Form.Group>
+
+              <Form.Group className="mb-4">
+                <Form.Label>Role</Form.Label>
+                <Field as="select" name="role" className="form-control">
+                  <option value="student">Student</option>
+                  <option value="admin">Admin</option>
+                </Field>
+                <ErrorMessage name="role" component="div" className="text-danger" />
+              </Form.Group>
+
               <Button type="submit" variant="primary" className="w-100" disabled={isSubmitting}>
-                {isSubmitting ? "Register..." : "Register"}
+                {isSubmitting ? "Registering..." : "Register"}
               </Button>
             </FormikForm>
           )}

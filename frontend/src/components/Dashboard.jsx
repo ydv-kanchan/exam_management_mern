@@ -7,6 +7,7 @@ function Dashboard() {
     const { user } = useAuthStore();
     const navigate = useNavigate();
     const [role, setRole] = useState(null);
+
     useEffect(() => {
         if (user) {
             setRole(user.student.role);
@@ -14,12 +15,13 @@ function Dashboard() {
             navigate("/login");
         }
     }, [user, navigate]);
+
     return (
         <Container className="d-flex justify-content-center align-items-center vh-100">
             <Card className="shadow-lg p-4" style={{ width: "450px", borderRadius: "10px" }}>
                 <Card.Body>
                     <h2 className="text-center text-primary mb-4">Welcome</h2>
-                    {role == "admin" && (
+                    {role === "admin" && (
                         <>
                             <h4 className="text-center text-success mb-3">Admin {user?.student?.name}</h4>
                             <ListGroup variant="flush">
@@ -32,7 +34,7 @@ function Dashboard() {
                             </ListGroup>
                         </>
                     )}
-                    {role == "student" && (
+                    {role === "student" && (
                         <>
                             <h4 className="text-center text-info mb-3">Student {user?.student?.name}</h4>
                             <ListGroup variant="flush">
@@ -48,7 +50,7 @@ function Dashboard() {
                 </Card.Body>
             </Card>
         </Container>
-    )
+    );
 }
 
-export default Dashboard
+export default Dashboard;

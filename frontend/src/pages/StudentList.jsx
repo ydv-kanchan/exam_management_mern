@@ -90,9 +90,9 @@ function StudentList() {
                     <Col sm={8}>
                         <h2 className="text-primary mb-4">📚 Student List</h2>
                     </Col>
-                    <Col sm={4}>
+                    {/* <Col sm={4}>
                         <Button variant="secondary" onClick={() => navigate(-1)}>⬅️ Back</Button>
-                    </Col>
+                    </Col> */}
                 </Row>
 
                 <Form className="mb-3">

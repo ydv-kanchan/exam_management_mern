@@ -1,13 +1,22 @@
 import { useState, useEffect } from "react";
-import { Container, Table, Button, Form, Card, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Table,
+  Button,
+  Form,
+  Card,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { IoClose } from "react-icons/io5";
 
 const ExamList = () => {
   const [exams, setExams] = useState([]);
   const [search, setSearch] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const user = localStorage.getItem("user");
   if (!user) throw new Error("No token found");
@@ -34,7 +43,7 @@ const ExamList = () => {
 
   return (
     <>
-      <Container className="mt-5" >
+      <Container className="mt-5">
         <Card className="shadow-lg p-4">
           <Row className="">
             <Col sm={8}>
@@ -42,9 +51,17 @@ const ExamList = () => {
             </Col>
             <Col sm={4} className="text-end">
               {userRole === "admin" && (
-                <Button variant="primary" onClick={() => navigate("/exams/create")} className="me-3">➕ Create Exam</Button>
+                <Button
+                  variant="primary"
+                  onClick={() => navigate("/dashboard/exams/create")}
+                  className="me-3"
+                >
+                  ➕ Create Exam
+                </Button>
               )}
-              <Button variant="secondary" onClick={() => navigate(-1)}>⬅️ Back</Button>
+              {/* <Button onClick={() => navigate(-1)}>
+                <IoClose size={20} />
+              </Button> */}
             </Col>
           </Row>
 
@@ -68,7 +85,9 @@ const ExamList = () => {
             </thead>
             <tbody>
               {exams
-                .filter(exam => exam.title.toLowerCase().includes(search.toLowerCase()))
+                .filter((exam) =>
+                  exam.title.toLowerCase().includes(search.toLowerCase())
+                )
                 .map((exam, index) => (
                   <tr key={exam._id}>
                     <td>{index + 1}</td>
@@ -77,15 +96,33 @@ const ExamList = () => {
                     <td>
                       {userRole === "admin" ? (
                         <>
-                          <Button as={Link} to={`/exams/view/${exam._id}`} variant="info" className="me-2" size="sm">
+                          <Button
+                            as={Link}
+                            to={`/dashboard/exams/view/${exam._id}`}
+                            variant="info"
+                            className="me-2"
+                            size="sm"
+                          >
                             👁 View
                           </Button>
-                          <Button as={Link} to={`/exams/results/${exam._id}`} variant="warning" className="me-2" size="sm">
+                          <Button
+                            as={Link}
+                            to={`/dashboard/exams/results/${exam._id}`}
+                            variant="warning"
+                            className="me-2"
+                            size="sm"
+                          >
                             📊 View Results
                           </Button>
                         </>
                       ) : (
-                        <Button as={Link} to={`/exams/take/${exam._id}`} variant="success" className="me-2" size="sm">
+                        <Button
+                          as={Link}
+                          to={`/dashboard/exams/take/${exam._id}`}
+                          variant="success"
+                          className="me-2"
+                          size="sm"
+                        >
                           🎯 Take Exam
                         </Button>
                       )}
@@ -95,7 +132,7 @@ const ExamList = () => {
             </tbody>
           </Table>
         </Card>
-      </Container >
+      </Container>
     </>
   );
 };

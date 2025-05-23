@@ -16,6 +16,7 @@ const StudentExamList = () => {
 
   const fetchStudentExams = async () => {
     try {
+      console.log("Token in frontend:", user?.token);
       const response = await axios.get(
         `http://localhost:5000/api/student/${studentId}/exams`,
         {
@@ -24,7 +25,6 @@ const StudentExamList = () => {
       );
       setExamResults(response.data.exams);
     } catch (error) {
-      console.error("API Error:", error.response?.data || error.message);
       toast.error("Failed to fetch exams.");
     }
   };

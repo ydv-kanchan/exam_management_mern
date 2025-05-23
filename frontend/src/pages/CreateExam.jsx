@@ -6,161 +6,269 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const CreateExam = () => {
-    const navigate = useNavigate();
-    const user = localStorage.getItem("user");
-    if (!user) throw new Error("No token found");
+  const navigate = useNavigate();
+  const user = localStorage.getItem("user");
+  if (!user) throw new Error("No token found");
 
-    const parsedUser = JSON.parse(user);
-    if (!parsedUser.token) throw new Error("No token found in user object");
+  const parsedUser = JSON.parse(user);
+  if (!parsedUser.token) throw new Error("No token found in user object");
 
-    const validationSchema = Yup.object().shape({
-        title: Yup.string().required("Exam title is required"),
-        duration: Yup.number()
-            .required("Duration is required")
-            .positive("Must be a positive number")
-            .integer("Must be an integer"),
-        questions: Yup.array()
-            .of(
-                Yup.object().shape({
-                    question: Yup.string().required("Question is required"),
-                    options: Yup.array()
-                        .of(Yup.string().required("Option is required"))
-                        .min(2, "At least two options required"),
-                    correctAnswer: Yup.string().required("Correct answer is required").test(
-                        "valid-correct-answer",
-                        "Correct answer must be one of the provided options",
-                        function (value) {
-                            const { options } = this.parent;
-                            return options.includes(value);
-                        }
-                    ),
-                })
-            )
-            .min(1, "At least one question is required"),
-    });
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required("Exam title is required"),
+    duration: Yup.number()
+      .required("Duration is required")
+      .positive("Must be a positive number")
+      .integer("Must be an integer"),
+    numQuestionsToAsk: Yup.number()
+      .required("Number of questions to ask is required")
+      .min(1, "Must select at least one question")
+      .integer("Must be an integer"),
+    questions: Yup.array()
+      .of(
+        Yup.object().shape({
+          question: Yup.string().required("Question is required"),
+          options: Yup.array()
+            .of(Yup.string().required("Option is required"))
+            .min(2, "At least two options required"),
+          correctAnswer: Yup.string()
+            .required("Correct answer is required")
+            .test(
+              "valid-correct-answer",
+              "Correct answer must be one of the provided options",
+              function (value) {
+                const { options } = this.parent;
+                return options.includes(value);
+              }
+            ),
+        })
+      )
+      .min(1, "At least one question is required"),
+  });
 
-    const initialValues = {
-        title: "",
-        duration: "", 
-        questions: [{ question: "", options: ["", ""], correctAnswer: "" }],
-    };
+  const initialValues = {
+    title: "",
+    duration: "",
+    numQuestionsToAsk: "",
+    questions: [{ question: "", options: ["", ""], correctAnswer: "" }],
+  };
 
-    const handleSubmit = async (values, { setSubmitting }) => {
-        try {
-            const response = await axios.post(
-                "http://localhost:5000/api/exams/create",
-                values,
-                { headers: { Authorization: `Bearer ${parsedUser.token}` } }
-            );
-            toast.success(response.data.message);
-            navigate("/dashboard/exams");
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to create exam");
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await axios.post(
+        "http://localhost:5000/api/exams/create",
+        values,
+        {
+          headers: { Authorization: `Bearer ${parsedUser.token}` },
         }
-        setSubmitting(false);
-    };
+      );
+      toast.success("Exam created successfully");
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to create exam");
+    }
+    setSubmitting(false);
+  };
 
-    return (
-        <Container className="mt-5">
-            <Card className="shadow-lg p-4">
-                <h2 className="text-primary text-center mb-4">➕ Create New Exam</h2>
-                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                    {({ values, setFieldValue, isSubmitting }) => (
-                        <FormikForm>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Exam Title</Form.Label>
-                                <Field name="title" as={Form.Control} placeholder="Enter exam title" />
-                                <ErrorMessage name="title" component="div" className="text-danger" />
-                            </Form.Group>
+  return (
+    <Container className="mt-5">
+      <Card className="shadow-lg p-4">
+        <h2 className="mb-4">Create New Exam</h2>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ values, errors, touched, isSubmitting }) => (
+            <FormikForm>
+              <Form.Group className="mb-3">
+                <Form.Label>Exam Title</Form.Label>
+                <Field
+                  name="title"
+                  className={`form-control ${
+                    touched.title && errors.title ? "is-invalid" : ""
+                  }`}
+                />
+                <ErrorMessage
+                  component="div"
+                  name="title"
+                  className="invalid-feedback"
+                />
+              </Form.Group>
 
-                            <Form.Group className="mb-3">
-                                <Form.Label>Exam Duration (in minutes)</Form.Label>
-                                <Field name="duration" as={Form.Control} placeholder="Enter duration" />
-                                <ErrorMessage name="duration" component="div" className="text-danger" />
-                            </Form.Group>
+              <Row className="mb-3">
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Duration (minutes)</Form.Label>
+                    <Field
+                      type="number"
+                      name="duration"
+                      className={`form-control ${
+                        touched.duration && errors.duration ? "is-invalid" : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      component="div"
+                      name="duration"
+                      className="invalid-feedback"
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Number of Questions to Ask</Form.Label>
+                    <Field
+                      type="number"
+                      name="numQuestionsToAsk"
+                      className={`form-control ${
+                        touched.numQuestionsToAsk && errors.numQuestionsToAsk
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      component="div"
+                      name="numQuestionsToAsk"
+                      className="invalid-feedback"
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-                            <FieldArray name="questions">
-                                {({ push, remove }) => (
-                                    <>
-                                        {values.questions.map((q, qIndex) => (
-                                            <Card key={qIndex} className="mb-4 p-3">
-                                                <Row>
-                                                    <Col>
-                                                        <Form.Group>
-                                                            <Form.Label>Question {qIndex + 1}</Form.Label>
-                                                            <Field
-                                                                name={`questions.${qIndex}.question`}
-                                                                as={Form.Control}
-                                                                placeholder="Enter question"
-                                                            />
-                                                            <ErrorMessage name={`questions.${qIndex}.question`} component="div" className="text-danger" />
-                                                        </Form.Group>
-                                                    </Col>
-                                                </Row>
-                                                <FieldArray name={`questions.${qIndex}.options`}>
-                                                    {({ push: pushOption, remove: removeOption }) => (
-                                                        <>
-                                                            {values.questions[qIndex].options.map((opt, optIndex) => (
-                                                                <Row key={optIndex} className="align-items-center mt-2">
-                                                                    <Col>
-                                                                        <Field
-                                                                            name={`questions.${qIndex}.options.${optIndex}`}
-                                                                            as={Form.Control}
-                                                                            placeholder={`Option ${optIndex + 1}`}
-                                                                        />
-                                                                        <ErrorMessage name={`questions.${qIndex}.options.${optIndex}`} component="div" className="text-danger" />
-                                                                    </Col>
-                                                                    {values.questions[qIndex].options.length > 2 && (
-                                                                        <Col xs="auto">
-                                                                            <Button variant="danger" onClick={() => removeOption(optIndex)} size="sm">
-                                                                                🗑
-                                                                            </Button>
-                                                                        </Col>
-                                                                    )}
-                                                                </Row>
-                                                            ))}
-                                                            <Row>
-                                                                <Col className="text-start">
-                                                                    <Button variant="success" size="sm" className="mt-2" onClick={() => pushOption("")}>
-                                                                        ➕ Add Option
-                                                                    </Button>
-                                                                </Col>
-                                                            </Row>
-                                                        </>
-                                                    )}
-                                                </FieldArray>
-                                                <Form.Group className="mt-3">
-                                                    <Form.Label>Correct Answer</Form.Label>
-                                                    <Field
-                                                        name={`questions.${qIndex}.correctAnswer`}
-                                                        as={Form.Control}
-                                                        placeholder="Enter correct answer"
-                                                    />
-                                                    <ErrorMessage name={`questions.${qIndex}.correctAnswer`} component="div" className="text-danger" />
-                                                </Form.Group>
-                                                <Row>
-                                                    <Col className="text-start">
-                                                        <Button variant="danger" className="mt-3" onClick={() => remove(qIndex)} disabled={values.questions.length === 1}>❌ Remove Question</Button>
-                                                    </Col>
-                                                </Row>
-                                            </Card>
-                                        ))}
-                                        <Button variant="primary" onClick={() => push({ question: "", options: ["", ""], correctAnswer: "" })}>
-                                            ➕ Add Question
-                                        </Button>
-                                    </>
-                                )}
-                            </FieldArray>
-                            <div className="text-center mt-4">
-                                <Button type="submit" variant="success">{isSubmitting ? "Submitting..." : "✅ Create Exam"}</Button>
-                                <Button variant="secondary" className="ms-3" onClick={() => navigate("/dashboard/exams")}>⬅️ Cancel</Button>
-                            </div>
-                        </FormikForm>
-                    )}
-                </Formik>
-            </Card>
-        </Container>
-    );
+              <FieldArray name="questions">
+                {({ push, remove }) => (
+                  <>
+                    {values.questions.map((question, index) => (
+                      <Card key={index} className="mb-4 p-3">
+                        <Form.Group className="mb-3">
+                          <Form.Label>Question {index + 1}</Form.Label>
+                          <Field
+                            name={`questions[${index}].question`}
+                            className={`form-control ${
+                              touched.questions &&
+                              touched.questions[index]?.question &&
+                              errors.questions &&
+                              errors.questions[index]?.question
+                                ? "is-invalid"
+                                : ""
+                            }`}
+                          />
+                          <ErrorMessage
+                            component="div"
+                            name={`questions[${index}].question`}
+                            className="invalid-feedback"
+                          />
+                        </Form.Group>
+
+                        <FieldArray name={`questions[${index}].options`}>
+                          {({ push: pushOption, remove: removeOption }) => (
+                            <>
+                              {question.options.map((option, optIndex) => (
+                                <Form.Group
+                                  className="mb-2 d-flex align-items-center"
+                                  key={optIndex}
+                                >
+                                  <Field
+                                    name={`questions[${index}].options[${optIndex}]`}
+                                    className={`form-control me-2 ${
+                                      touched.questions &&
+                                      touched.questions[index]?.options &&
+                                      touched.questions[index].options[optIndex] &&
+                                      errors.questions &&
+                                      errors.questions[index]?.options &&
+                                      errors.questions[index].options[optIndex]
+                                        ? "is-invalid"
+                                        : ""
+                                    }`}
+                                  />
+                                  <Button
+                                    variant="danger"
+                                    onClick={() => removeOption(optIndex)}
+                                    disabled={question.options.length <= 2}
+                                  >
+                                    Remove
+                                  </Button>
+                                  <ErrorMessage
+                                    component="div"
+                                    name={`questions[${index}].options[${optIndex}]`}
+                                    className="invalid-feedback"
+                                  />
+                                </Form.Group>
+                              ))}
+
+                              <Button
+                                variant="secondary"
+                                onClick={() => pushOption("")}
+                                className="mb-3"
+                              >
+                                Add Option
+                              </Button>
+                            </>
+                          )}
+                        </FieldArray>
+
+                        <Form.Group>
+                          <Form.Label>Correct Answer</Form.Label>
+                          <Field
+                            as="select"
+                            name={`questions[${index}].correctAnswer`}
+                            className={`form-select ${
+                              touched.questions &&
+                              touched.questions[index]?.correctAnswer &&
+                              errors.questions &&
+                              errors.questions[index]?.correctAnswer
+                                ? "is-invalid"
+                                : ""
+                            }`}
+                          >
+                            <option value="">Select correct answer</option>
+                            {question.options.map((opt, idx) => (
+                              <option key={idx} value={opt}>
+                                {opt}
+                              </option>
+                            ))}
+                          </Field>
+                          <ErrorMessage
+                            component="div"
+                            name={`questions[${index}].correctAnswer`}
+                            className="invalid-feedback"
+                          />
+                        </Form.Group>
+
+                        <Button
+                          variant="danger"
+                          className="mt-3"
+                          onClick={() => remove(index)}
+                          disabled={values.questions.length <= 1}
+                        >
+                          Remove Question
+                        </Button>
+                      </Card>
+                    ))}
+
+                    <Button
+                      variant="primary"
+                      onClick={() => push({ question: "", options: ["", ""], correctAnswer: "" })}
+                    >
+                      Add Question
+                    </Button>
+                  </>
+                )}
+              </FieldArray>
+
+              <Button
+                type="submit"
+                className="mt-4"
+                variant="success"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Creating..." : "Create Exam"}
+              </Button>
+            </FormikForm>
+          )}
+        </Formik>
+      </Card>
+    </Container>
+  );
 };
 
 export default CreateExam;

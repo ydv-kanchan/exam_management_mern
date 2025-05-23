@@ -84,15 +84,9 @@ const CreateExam = () => {
                 <Form.Label>Exam Title</Form.Label>
                 <Field
                   name="title"
-                  className={`form-control ${
-                    touched.title && errors.title ? "is-invalid" : ""
-                  }`}
+                  className={`form-control ${touched.title && errors.title ? "is-invalid" : ""}`}
                 />
-                <ErrorMessage
-                  component="div"
-                  name="title"
-                  className="invalid-feedback"
-                />
+                <ErrorMessage component="div" name="title" className="invalid-feedback" />
               </Form.Group>
 
               <Row className="mb-3">
@@ -106,11 +100,7 @@ const CreateExam = () => {
                         touched.duration && errors.duration ? "is-invalid" : ""
                       }`}
                     />
-                    <ErrorMessage
-                      component="div"
-                      name="duration"
-                      className="invalid-feedback"
-                    />
+                    <ErrorMessage component="div" name="duration" className="invalid-feedback" />
                   </Form.Group>
                 </Col>
                 <Col>
@@ -120,9 +110,7 @@ const CreateExam = () => {
                       type="number"
                       name="numQuestionsToAsk"
                       className={`form-control ${
-                        touched.numQuestionsToAsk && errors.numQuestionsToAsk
-                          ? "is-invalid"
-                          : ""
+                        touched.numQuestionsToAsk && errors.numQuestionsToAsk ? "is-invalid" : ""
                       }`}
                     />
                     <ErrorMessage
@@ -169,7 +157,7 @@ const CreateExam = () => {
                                 >
                                   <Field
                                     name={`questions[${index}].options[${optIndex}]`}
-                                    className={`form-control me-2 ${
+                                    className={`form-control me-2 w-75 ${
                                       touched.questions &&
                                       touched.questions[index]?.options &&
                                       touched.questions[index].options[optIndex] &&
@@ -234,14 +222,16 @@ const CreateExam = () => {
                           />
                         </Form.Group>
 
-                        <Button
-                          variant="danger"
-                          className="mt-3"
-                          onClick={() => remove(index)}
-                          disabled={values.questions.length <= 1}
-                        >
-                          Remove Question
-                        </Button>
+                        <div className="d-flex justify-content-end">
+                          <Button
+                            variant="danger"
+                            className="mt-3"
+                            onClick={() => remove(index)}
+                            disabled={values.questions.length <= 1}
+                          >
+                            Remove Question
+                          </Button>
+                        </div>
                       </Card>
                     ))}
 
@@ -255,14 +245,11 @@ const CreateExam = () => {
                 )}
               </FieldArray>
 
-              <Button
-                type="submit"
-                className="mt-4"
-                variant="success"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Creating..." : "Create Exam"}
-              </Button>
+              <div className="d-flex justify-content-end mt-4">
+                <Button type="submit" variant="success" disabled={isSubmitting}>
+                  {isSubmitting ? "Creating..." : "Create Exam"}
+                </Button>
+              </div>
             </FormikForm>
           )}
         </Formik>

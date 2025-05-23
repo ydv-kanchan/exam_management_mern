@@ -1,0 +1,113 @@
+[
+    {
+      "_id": { "$oid": "681c0ab99515c0d9ddbca301" },
+      "title": "MySQL",
+      "questions": [
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca311" }, "question": "What is the default port of MySQL?", "options": ["3306", "1433"], "correctAnswer": "3306" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca312" }, "question": "Which command is used to see all databases?", "options": ["SHOW DATABASES;", "SELECT * FROM databases;"], "correctAnswer": "SHOW DATABASES;" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca313" }, "question": "Which keyword is used to remove a table?", "options": ["DELETE TABLE", "DROP TABLE"], "correctAnswer": "DROP TABLE" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca314" }, "question": "What is used to filter rows?", "options": ["WHERE", "ORDER BY"], "correctAnswer": "WHERE" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca315" }, "question": "Which clause is used to group rows?", "options": ["GROUP BY", "ORDER BY"], "correctAnswer": "GROUP BY" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca316" }, "question": "Which command updates rows?", "options": ["UPDATE", "INSERT"], "correctAnswer": "UPDATE" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca317" }, "question": "Which SQL constraint ensures uniqueness?", "options": ["UNIQUE", "NOT NULL"], "correctAnswer": "UNIQUE" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca318" }, "question": "Which command shows table structure?", "options": ["DESC tablename;", "SHOW TABLES;"], "correctAnswer": "DESC tablename;" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca319" }, "question": "Which function counts rows?", "options": ["COUNT()", "SUM()"], "correctAnswer": "COUNT()" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca320" }, "question": "Which clause is used to sort results?", "options": ["ORDER BY", "GROUP BY"], "correctAnswer": "ORDER BY" }
+      ],
+      "createdAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "updatedAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "__v": 0
+    },
+    {
+      "_id": { "$oid": "681c0ab99515c0d9ddbca321" },
+      "title": "Java",
+      "questions": [
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca322" }, "question": "What is the size of an int in Java?", "options": ["16 bits", "32 bits"], "correctAnswer": "32 bits" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca323" }, "question": "What is the default value of a boolean in Java?", "options": ["true", "false"], "correctAnswer": "false" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca324" }, "question": "Which method is used to start a thread in Java?", "options": ["start()", "run()"], "correctAnswer": "start()" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca325" }, "question": "What does JVM stand for?", "options": ["Java Virtual Machine", "Java Version Manager"], "correctAnswer": "Java Virtual Machine" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca326" }, "question": "What is the correct syntax for creating a thread?", "options": ["Thread t = new Thread();", "Thread t = new Thread(); t.run();"], "correctAnswer": "Thread t = new Thread();" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca327" }, "question": "Which method is used to compare two strings in Java?", "options": ["compare()", "equals()"], "correctAnswer": "equals()" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca328" }, "question": "Which package does the Scanner class belong to?", "options": ["java.util", "java.io"], "correctAnswer": "java.util" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca329" }, "question": "What is the method signature for main in Java?", "options": ["public static void main(String[] args)", "public static void main(String args[])"], "correctAnswer": "public static void main(String[] args)" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca330" }, "question": "Which is the superclass of all classes in Java?", "options": ["Object", "Class"], "correctAnswer": "Object" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca331" }, "question": "Which is used to handle exceptions in Java?", "options": ["try-catch", "throw-throws"], "correctAnswer": "try-catch" }
+      ],
+      "createdAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "updatedAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "__v": 0
+    },
+    {
+      "_id": { "$oid": "681c0ab99515c0d9ddbca332" },
+      "title": "JavaScript",
+      "questions": [
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca333" }, "question": "What does DOM stand for?", "options": ["Document Object Model", "Document Output Model"], "correctAnswer": "Document Object Model" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca334" }, "question": "What is the use of 'this' in JavaScript?", "options": ["References current object", "Refers to a global object"], "correctAnswer": "References current object" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca335" }, "question": "What does JSON stand for?", "options": ["JavaScript Object Notation", "Java Simple Object Notation"], "correctAnswer": "JavaScript Object Notation" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca336" }, "question": "Which function is used to parse JSON in JavaScript?", "options": ["JSON.parse()", "parseJSON()"], "correctAnswer": "JSON.parse()" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca337" }, "question": "What is the purpose of the 'use strict' directive?", "options": ["Enable strict mode", "Disables the debugger"], "correctAnswer": "Enable strict mode" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca338" }, "question": "How do you declare a variable in JavaScript?", "options": ["var", "let", "const"], "correctAnswer": "let" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca339" }, "question": "What does NaN stand for?", "options": ["Not a Number", "Not Available Number"], "correctAnswer": "Not a Number" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca340" }, "question": "Which symbol is used for comments in JavaScript?", "options": ["//", "/* */"], "correctAnswer": "//" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca341" }, "question": "How do you create a function in JavaScript?", "options": ["function myFunction()", "function:myFunction()"], "correctAnswer": "function myFunction()" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca342" }, "question": "Which is a JavaScript framework?", "options": ["Angular", "JavaFX"], "correctAnswer": "Angular" }
+      ],
+      "createdAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "updatedAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "__v": 0
+    },
+    {
+      "_id": { "$oid": "681c0ab99515c0d9ddbca343" },
+      "title": "Operating System",
+      "questions": [
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca344" }, "question": "What is the function of an operating system?", "options": ["Manage hardware", "Execute programs"], "correctAnswer": "Both" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca345" }, "question": "Which OS is used in most smartphones?", "options": ["Android", "Windows Mobile"], "correctAnswer": "Android" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca346" }, "question": "What is the kernel in an OS?", "options": ["Core part of the operating system", "Memory management unit"], "correctAnswer": "Core part of the operating system" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca347" }, "question": "What is a thread in an operating system?", "options": ["The smallest unit of execution", "A system resource"], "correctAnswer": "The smallest unit of execution" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca348" }, "question": "What does GUI stand for?", "options": ["Graphical User Interface", "General User Interface"], "correctAnswer": "Graphical User Interface" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca349" }, "question": "Which is a type of OS?", "options": ["Single-user", "Multi-tasking"], "correctAnswer": "Both" }
+      ],
+      "createdAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "updatedAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "__v": 0
+    },
+    {
+      "_id": { "$oid": "681c0ab99515c0d9ddbca350" },
+      "title": "Maths Aptitude",
+      "questions": [
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca351" }, "question": "What is the square root of 144?", "options": ["12", "14"], "correctAnswer": "12" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca352" }, "question": "What is 15% of 200?", "options": ["30", "35"], "correctAnswer": "30" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca353" }, "question": "What is 7 times 8?", "options": ["56", "48"], "correctAnswer": "56" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca354" }, "question": "What is 10 raised to the power of 3?", "options": ["100", "1000"], "correctAnswer": "1000" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca355" }, "question": "What is the perimeter of a rectangle with length 5 and breadth 6?", "options": ["22", "30"], "correctAnswer": "22" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca356" }, "question": "What is the value of pi?", "options": ["3.14", "3.1415"], "correctAnswer": "3.14" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca357" }, "question": "What is 5 factorial?", "options": ["120", "24"], "correctAnswer": "120" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca358" }, "question": "What is the LCM of 4 and 6?", "options": ["12", "24"], "correctAnswer": "12" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca359" }, "question": "What is 25% of 80?", "options": ["20", "25"], "correctAnswer": "20" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca360" }, "question": "What is the area of a circle with radius 7?", "options": ["154", "144"], "correctAnswer": "154" }
+      ],
+      "createdAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "updatedAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "__v": 0
+    },
+    {
+      "_id": { "$oid": "681c0ab99515c0d9ddbca361" },
+      "title": "Cloud Computing",
+      "questions": [
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca362" }, "question": "What is cloud computing?", "options": ["Storing data on local servers", "Storing data on remote servers"], "correctAnswer": "Storing data on remote servers" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca363" }, "question": "Which is an example of a cloud service?", "options": ["Google Drive", "Dropbox"], "correctAnswer": "Both" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca364" }, "question": "What does SaaS stand for?", "options": ["Software as a Service", "Storage as a Service"], "correctAnswer": "Software as a Service" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca365" }, "question": "Which company is the leading provider of cloud services?", "options": ["Amazon", "Google"], "correctAnswer": "Amazon" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca366" }, "question": "What is the most common use of cloud computing?", "options": ["Data storage", "Application hosting"], "correctAnswer": "Data storage" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca367" }, "question": "Which technology is essential for cloud computing?", "options": ["Virtualization", "Blockchain"], "correctAnswer": "Virtualization" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca368" }, "question": "Which service does AWS provide?", "options": ["EC2", "S3"], "correctAnswer": "Both" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca369" }, "question": "Which cloud deployment model is owned by a single organization?", "options": ["Private cloud", "Public cloud"], "correctAnswer": "Private cloud" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca370" }, "question": "What is the cloud region?", "options": ["Physical location of cloud servers", "Virtual environment for cloud services"], "correctAnswer": "Physical location of cloud servers" },
+        { "_id": { "$oid": "681c0ab99515c0d9ddbca371" }, "question": "Which is an advantage of cloud computing?", "options": ["Scalability", "Cost-effectiveness"], "correctAnswer": "Both" }
+      ],
+      "createdAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "updatedAt": { "$date": "2025-05-08T04:50:39.311Z" },
+      "__v": 0
+    }
+  ]
+  

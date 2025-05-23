@@ -21,9 +21,12 @@ const ExamResults = () => {
 
   const fetchExamResults = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/admin/exam-results/${examId}`, {
-        headers: { Authorization: `Bearer ${parsedUser.token}` },
-      });
+      const response = await axios.get(
+        `http://localhost:5000/api/admin/exam-results/${examId}`,
+        {
+          headers: { Authorization: `Bearer ${parsedUser.token}` },
+        }
+      );
       setResults(response.data);
     } catch (error) {
       console.log(error);
@@ -34,7 +37,13 @@ const ExamResults = () => {
     <Container className="mt-5">
       <Card className="shadow-lg p-4">
         <h2 className="text-primary mb-4">📊 Exam Results</h2>
-        <Button variant="secondary" onClick={() => navigate(-1)} className="mb-3">⬅️ Back</Button>
+        <Button
+          variant="secondary"
+          onClick={() => navigate(-1)}
+          className="mb-3"
+        >
+          ⬅️ Back
+        </Button>
 
         {results.length === 0 ? (
           <p>No students have taken this exam yet.</p>

@@ -21,6 +21,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/exams", examRoutes);
+
 app.use("/api/student", studentRoutes);
 
 const PORT = process.env.PORT || 5000;

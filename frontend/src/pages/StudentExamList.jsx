@@ -16,6 +16,7 @@ const StudentExamList = () => {
 
     const fetchStudentExams = async () => {
         try {
+            console.log("Token in frontend:", user?.token);
             const response = await axios.get(`http://localhost:5000/api/student/${studentId}/exams`, {
                 headers: { Authorization: `Bearer ${user.token}` },
             });

@@ -4,17 +4,22 @@ const jwt = require("jsonwebtoken");
 const authenticateUser = (req, res, next) => {
   const authHeader = req.header("Authorization");
 
+  console.log("header in backend");
+  console.log(authHeader);
   if (!authHeader) {
     return res.status(401).json({ error: "Access denied. No token provided." });
   }
 
   const token = authHeader.split(" ")[1];
+  console.log("token in the backend");
+  console.log(token);
   if (!token) {
     return res.status(401).json({ error: "Access denied. Token missing." });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded token:", decoded);
     req.student = decoded;
     next();
   } catch (error) {

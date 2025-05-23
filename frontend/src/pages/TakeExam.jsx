@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Card, Button, Form, Row, Col, Modal } from "react-bootstrap";
 import axios from "axios";
@@ -11,36 +11,56 @@ const TakeExam = () => {
   const studentId = user?.student?._id;
 
   const [exam, setExam] = useState(null);
+  const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState(0);
   const [examStarted, setExamStarted] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const intervalRef = useRef(null);
 
-  // Fetch exam data
+  const fetchExam = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/exams/${id}`, {
+        headers: { Authorization: `Bearer ${user?.token}` },
+      });
+      setExam(response.data);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to fetch exam");
+    }
+  }, [id, user?.token]);
+
+  const handleSubmit = useCallback(async () => {
+    clearInterval(intervalRef.current);
+    try {
+      const formattedAnswers = Object.entries(answers).map(([questionId, selectedOption]) => ({
+        questionId,
+        selectedOption,
+      }));
+
+      const payload = {
+        studentId,
+        answers: formattedAnswers,
+      };
+
+      await axios.post(`http://localhost:5000/api/student/exams/${id}/submit`, payload, {
+        headers: { Authorization: `Bearer ${user?.token}` },
+      });
+
+      toast.success("Exam submitted successfully!");
+      setModalShow(true);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to submit exam");
+    }
+  }, [answers, id, studentId, user?.token]);
+
   useEffect(() => {
     if (!user) {
       navigate("/login");
       return;
     }
     fetchExam();
-  }, []);
+  }, [user, navigate, fetchExam]);
 
-  const fetchExam = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/exams/${id}`,
-        {
-          headers: { Authorization: `Bearer ${user.token}` },
-        }
-      );
-      setExam(response.data);
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Failed to fetch exam");
-    }
-  };
-
-  // Timer countdown logic
   useEffect(() => {
     if (!examStarted || timeLeft <= 0) return;
 
@@ -49,16 +69,14 @@ const TakeExam = () => {
     }, 1000);
 
     return () => clearInterval(intervalRef.current);
-  }, [examStarted]);
+  }, [examStarted, timeLeft]);
 
-  // Auto-submit when time runs out
   useEffect(() => {
     if (examStarted && timeLeft === 0) {
       handleSubmit();
     }
-  }, [timeLeft]);
+  }, [examStarted, timeLeft, handleSubmit]);
 
-  // Restrict navigation when exam starts
   useEffect(() => {
     if (!examStarted) return;
 
@@ -85,20 +103,21 @@ const TakeExam = () => {
   const enterFullScreen = () => {
     const elem = document.documentElement;
     if (elem.requestFullscreen) elem.requestFullscreen();
-    else if (elem.mozRequestFullScreen) elem.mozRequestFullScreen(); // Firefox
-    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen(); // Chrome/Safari
-    else if (elem.msRequestFullscreen) elem.msRequestFullscreen(); // IE/Edge
+    else if (elem.mozRequestFullScreen) elem.mozRequestFullScreen();
+    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+    else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
   };
 
   const exitFullScreen = () => {
     if (document.exitFullscreen) document.exitFullscreen();
-    else if (document.mozCancelFullScreen) document.mozCancelFullScreen(); // Firefox
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); // Chrome/Safari
-    else if (document.msExitFullscreen) document.msExitFullscreen(); // IE/Edge
+    else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    else if (document.msExitFullscreen) document.msExitFullscreen();
   };
 
   const startExam = () => {
     if (exam?.duration) {
+      setQuestions(exam.questions);
       setTimeLeft(exam.duration * 60);
       setExamStarted(true);
       enterFullScreen();
@@ -109,39 +128,10 @@ const TakeExam = () => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
 
-  const handleSubmit = async () => {
-    clearInterval(intervalRef.current);
-
-    try {
-      const formattedAnswers = Object.entries(answers).map(
-        ([questionId, selectedOption]) => ({
-          questionId,
-          selectedOption,
-        })
-      );
-
-      const payload = {
-        studentId,
-        answers: formattedAnswers,
-      };
-
-      await axios.post(
-        `http://localhost:5000/api/student/exams/${id}/submit`,
-        payload,
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
-
-      toast.success("Exam submitted successfully!");
-      setModalShow(true); // Show the modal after submission
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Failed to submit exam");
-    }
-  };
-
   const handleNavigateDashboard = () => {
-    exitFullScreen(); // Exit fullscreen before navigating
-    setModalShow(false); // Close the modal
-    navigate("/dashboard"); // Navigate to dashboard
+    exitFullScreen();
+    setModalShow(false);
+    navigate("/dashboard");
   };
 
   const formatTime = (seconds) => {
@@ -180,7 +170,7 @@ const TakeExam = () => {
         ) : (
           <>
             <h5 className="mb-4 text-danger">Time Left: ⏳ {formatTime(timeLeft)}</h5>
-            {exam.questions.map((question, index) => (
+            {questions.map((question, index) => (
               <Form.Group key={question._id} className="mb-4">
                 <Form.Label>
                   {index + 1}. {question.question}
@@ -205,7 +195,6 @@ const TakeExam = () => {
         )}
       </Card>
 
-      {/* Modal for confirmation after submission */}
       <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Exam Submitted</Modal.Title>
